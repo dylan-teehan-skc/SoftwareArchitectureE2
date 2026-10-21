@@ -1,4 +1,4 @@
-cumulative_duration.png
+output/
 __pycache__/
 *.py[cod]
 .venv/

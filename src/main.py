@@ -1,3 +1,4 @@
+import sys
 from functools import partial
 from pathlib import Path
 
@@ -13,7 +14,11 @@ PLOT_PATH = (
 
 def main():
     plot = partial(save_and_show_cumulative, path=PLOT_PATH)
-    EvaApp(ConsoleInput(), ConsoleOutput(), load_evas, plot).run()
+    try:
+        EvaApp(ConsoleInput(), ConsoleOutput(), load_evas, plot).run()
+    except (EOFError, KeyboardInterrupt):
+        print("\nInput ended. Exiting.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

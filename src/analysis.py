@@ -1,3 +1,6 @@
+from typing import NamedTuple, Optional
+
+
 def duration_category(hours):
     if hours < 4:
         return "Short"
@@ -32,3 +35,33 @@ def cumulative_series(evas):
         dates.append(eva.date)
         cumulative_hours.append(total_hours)
     return dates, cumulative_hours
+
+
+class Summary(NamedTuple):
+    country: str
+    count: int
+    total_hours: float
+    average_hours: Optional[float]
+
+
+def in_years(evas, start_year, end_year):
+    return [eva for eva in evas if eva.date and start_year <= eva.date.year <= end_year]
+
+
+def summarise(evas, country):
+    count = sum(1 for eva in evas if is_country(eva, country))
+    total = country_total(evas, country)
+    return Summary(country, count, total, total / count if count else None)
+
+
+def compare_countries(evas, country_a, country_b, start_year, end_year):
+    period = in_years(evas, start_year, end_year)
+    a = summarise(period, country_a)
+    b = summarise(period, country_b)
+    if a.total_hours > b.total_hours:
+        leader = a.country
+    elif b.total_hours > a.total_hours:
+        leader = b.country
+    else:
+        leader = None
+    return a, b, leader

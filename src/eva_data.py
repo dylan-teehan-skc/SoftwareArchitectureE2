@@ -15,9 +15,16 @@ def parse_duration(text):
 
 
 def load_evas(path):
-    with open(path, "r", encoding="utf-8") as file:
-        records = json.load(file)
+    try:
+        with open(path, "r", encoding="utf-8") as file:
+            return parse_records(json.load(file))
+    except OSError as error:
+        raise ValueError(f"Cannot open {path}: {error.strerror}.") from error
+    except (ValueError, TypeError, AttributeError) as error:
+        raise ValueError(f"{path} is not a valid EVA data file.") from error
 
+
+def parse_records(records):
     evas = []
     for record in records:
         duration_text = record.get("duration")

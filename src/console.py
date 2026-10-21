@@ -14,7 +14,7 @@ class ConsoleInput:
             try:
                 return parse(self.read(prompt).strip())
             except ValueError as error:
-                self.write(error)
+                self.write(str(error))
 
     def ask_evas(self, load_evas):
         return self._ask_until("Enter the data filename: ", load_evas)

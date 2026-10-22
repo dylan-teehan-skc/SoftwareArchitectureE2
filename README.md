@@ -1,46 +1,43 @@
-# EVA analysis - Software Raconteur handoff
+# EVA analysis
 
-This is the outgoing version of my EVA application, ready for the next student's development round. It preserves the existing single-file implementation and Git history.
+Gives a country's total EVA hours, splits EVAs into Short/Standard/Long, plots cumulative EVA time and compares two countries over a year range.
 
-## Setup
+## Set up and run the application
 
-Requires Python 3 and Matplotlib. Verified with Python 3.11.9. From the repository directory:
+Needs Python 3 and matplotlib.
 
-```powershell
-python -m venv .venv
-.venv\Scripts\python.exe -m pip install -r requirements.txt
-.venv\Scripts\python.exe evacodev2.py
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python src/main.py
 ```
 
-On macOS/Linux use `.venv/bin/python` in place of `.venv\Scripts\python.exe`. If Matplotlib is already installed, run `python evacodev2.py` directly.
+Enter `data/eva-data.json`, then a country (USA or Russia). The plot saves to `output/` - close it, then enter Country A, Country B, a start year and an end year. Bad input is asked again.
 
-## Run
+## Understand its module structure
 
-1. Enter `eva-data.json` when asked for a data filename, or supply another compatible file path.
-2. Enter `USA` or `Russia` for the country total. Country matching ignores case and surrounding whitespace.
-3. The program prints the selected country's all-time EVA hours and counts/percentages for duration categories across all countries.
-4. It saves `cumulative_duration.png` in the current directory and opens the cumulative plot. Close that window to finish.
+![Module structure](docs/diagrams/architecture.svg)
 
-The plot is cumulative across all dated EVAs, not a separate annual total or a filter for the selected country.
+## Identify the principal responsibilities
 
-## Current features
+- `src/main.py` - builds the real parts and starts the app
+- `src/app.py` - runs the steps in order
+- `src/analysis.py` - all calculations, no input/output
+- `src/eva_data.py` - loads the JSON into EVA records
+- `src/console.py` - prompts, checking answers and printing
+- `src/plot.py` - the plot
 
-- Reads a user-selected JSON dataset.
-- Reports total EVA duration in hours for one selected country.
-- Classifies duration-bearing EVAs across all countries: Short <4 hours; Standard >=4 and <7 hours; Long >=7 hours.
-- Reports category counts and percentages.
-- Saves and displays a chronologically sorted cumulative-duration plot.
+## Run the automated tests
 
-Duration values are interpreted as hours:minutes. Records with no duration are skipped. Duration-bearing records without dates still contribute to country totals and categories, but cannot appear in the chronological plot. Zero-duration records count in the categories.
+```bash
+python3 -m unittest discover tests -v
+```
 
-## Files and handoff
+No matplotlib or typing needed.
 
-- `evacodev2.py`: current application; execution begins at the top of this script.
-- `eva-data.json`: supplied dataset, unchanged.
-- `original-file-answers.txt`: historical Week 2 planning and review answers.
-- `HANDOFF.md`: completed changes, verification results and known limitations.
-- `requirements.txt`: the application dependency.
+## Locate the architectural decision records
 
-Pass on this Git repository with its history, preferably by sharing the repository URL so the next student can clone it. A GitHub source ZIP does not contain the Git history. Follow the assigned A/B/C/D/E handoff sequence. The next student should first run and examine this inherited version, then carry out their assigned development round.
+- `docs/docx/activity2-ADR-001-split-into-modules.docx` - splitting up the script (Activity 2)
+- `docs/docx/activity5-ADR-002-testable-analysis.docx` - making the analysis testable (Activity 5)
 
-This outgoing version retains the work completed before the Week 6 inherited-code round. It does not include the Week 6 modular restructuring or two-country/year-range comparison.
+The other activity write-ups are in `docs/docx/`, and history and known limitations are in `HANDOFF.md`.

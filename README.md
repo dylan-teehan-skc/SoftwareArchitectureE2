@@ -40,4 +40,4 @@ No matplotlib or typing needed.
 - `docs/docx/activity2-ADR-001-split-into-modules.docx` - splitting up the script (Activity 2)
 - `docs/docx/activity5-ADR-002-testable-analysis.docx` - making the analysis testable (Activity 5)
 
-The other activity write-ups are in `docs/docx/`, and history and known limitations are in `HANDOFF.md`.
+The other activity write-ups are in `docs/docx/`.
